@@ -1,4 +1,5 @@
 import pygame
+import sys
 from random import randrange
 
 RES = 800
@@ -9,7 +10,7 @@ apple = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
 length = 1
 snake = [(x, y)]
 dx, dy = 0, 0
-fps = 25
+fps = 50
 dirs = {'W': True, 'S': True, 'A': True, 'D': True, }
 score = 0
 speed_count, snake_speed = 0, 10
@@ -27,6 +28,25 @@ def close_game():
             exit()
 
 while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit((0))
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            x_mouse, y_mouse = pygame.mouse.get_pos()
+            col = x_mouse // (RES + SIZE)
+            row = y_mouse // (RES + SIZE)
+            if mas[row][col] == 0:
+                if query % 2 == (0):
+                    mas[row][col] = 'победил X'
+                else:
+                    mas[row][col] = 'Победил O'
+                query += 1
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            game_over = False
+            mas = [[0] * 4 for i in range(4)]
+            query=0
+
     surface.blit(img, (0, 0))
     # drawing snake, apple
     [pygame.draw.rect(surface, pygame.Color('green'), (i, j, SIZE - 1, SIZE - 1)) for i, j in snake]
