@@ -21,7 +21,8 @@ font_score = pygame.font.SysFont('Arial', 26, bold=True)
 font_end = pygame.font.SysFont('Arial', 66, bold=True)
 img = pygame.image.load('1.jpg').convert()
 img_apple = pygame.image.load('apple.png').convert()
-img_fase = pygame.image.load('SNAKE.png').convert()
+img_face = pygame.image.load('snakeface.png').convert()
+
 def close_game():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -32,7 +33,7 @@ while True:
     surface.blit(img, (0, 0))
     # drawing snake, apple
     [pygame.draw.rect(surface, pygame.Color('green'), (i, j, SIZE - 1, SIZE - 1)) for i, j in snake]
-    surface.blit(img_fase, snake)
+    surface.blit(img_face, snake[-1])
     #pygame.draw.rect(surface, pygame.Color('red'), (*apple, SIZE, SIZE))
     surface.blit(img_apple, apple)
 
