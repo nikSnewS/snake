@@ -1,5 +1,4 @@
 import pygame
-import sys
 from random import randrange
 
 RES = 800
@@ -10,7 +9,7 @@ apple = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
 length = 1
 snake = [(x, y)]
 dx, dy = 0, 0
-fps = 50
+fps = 60
 dirs = {'W': True, 'S': True, 'A': True, 'D': True, }
 score = 0
 speed_count, snake_speed = 0, 10
@@ -21,53 +20,39 @@ clock = pygame.time.Clock()
 font_score = pygame.font.SysFont('Arial', 26, bold=True)
 font_end = pygame.font.SysFont('Arial', 66, bold=True)
 img = pygame.image.load('1.jpg').convert()
-
+img_apple = pygame.image.load('apple.png').convert()
+img_fase = pygame.image.load('SNAKE.png').convert()
 def close_game():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
 
 while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit((0))
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            x_mouse, y_mouse = pygame.mouse.get_pos()
-            col = x_mouse // (RES + SIZE)
-            row = y_mouse // (RES + SIZE)
-            if mas[row][col] == 0:
-                if query % 2 == (0):
-                    mas[row][col] = 'победил X'
-                else:
-                    mas[row][col] = 'Победил O'
-                query += 1
-        elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-            game_over = False
-            mas = [[0] * 4 for i in range(4)]
-            query=0
-
+    surface.fill('black', (0,0, RES, RES))
     surface.blit(img, (0, 0))
     # drawing snake, apple
     [pygame.draw.rect(surface, pygame.Color('green'), (i, j, SIZE - 1, SIZE - 1)) for i, j in snake]
-    pygame.draw.rect(surface, pygame.Color('red'), (*apple, SIZE, SIZE))
+    surface.blit(img_fase, snake)
+    #pygame.draw.rect(surface, pygame.Color('red'), (*apple, SIZE, SIZE))
+    surface.blit(img_apple, apple)
+
     # show score
     render_score = font_score.render(f'SCORE: {score}', 1, pygame.Color('orange'))
     surface.blit(render_score, (5, 5))
     # snake movement
     speed_count += 1
     if not speed_count % snake_speed:
-	    x += dx * SIZE
-	    y += dy * SIZE
-	    snake.append((x, y))
-	    snake = snake[-length:]
+        x += dx * SIZE
+        y += dy * SIZE
+        snake.append((x, y))
+        snake = snake[-length:]
     # eating food
     if snake[-1] == apple:
         apple = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
         length += 1
         score += 1
         snake_speed -= 1
-        snake_speed = max(snake_speed, 4)
+        snake_speed = max(snake_speed, 10)
     # game over
     if x < 0 or x > RES - SIZE or y < 0 or y > RES - SIZE or len(snake) != len(set(snake)):
         while True:
