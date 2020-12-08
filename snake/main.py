@@ -34,6 +34,7 @@ while True:
     surface.blit(img, (0, 0))
     # drawing snake, apple
     [pygame.draw.rect(surface, pygame.Color('green'), (i, j, SIZE - 1, SIZE - 1)) for i, j in snake]
+    [surface.blit(img_body, (i,j)) for i, j in snake]
     surface.blit(img_face, snake[-1])
     # pygame.draw.rect(surface, pygame.Color('red'), (*apple, SIZE, SIZE))
     surface.blit(img_apple, apple)
