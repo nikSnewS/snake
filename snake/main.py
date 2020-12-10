@@ -1,7 +1,7 @@
 import pygame
 from random import randrange
 
-RES = 800
+RES = 1000
 SIZE = 50
 
 x, y = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
@@ -13,29 +13,34 @@ fps = 60
 dirs = {'W': True, 'S': True, 'A': True, 'D': True, }
 score = 0
 speed_count, snake_speed = 0, 10
+slize = (0, 0)
+
 
 pygame.init()
 surface = pygame.display.set_mode([RES, RES])
 clock = pygame.time.Clock()
 font_score = pygame.font.SysFont('Arial', 26, bold=True)
 font_end = pygame.font.SysFont('Arial', 66, bold=True)
-img = pygame.image.load('1.jpg').convert()
-img_apple = pygame.image.load('apple.png').convert()
-img_face = pygame.image.load('snakeface.png').convert()
-img_body = pygame.image.load('body.png').convert()
+
+img = pygame.image.load('1.jpg').convert_alpha()
+img_apple = pygame.image.load('apple.png').convert_alpha()
+img_face = pygame.image.load('snakeface.png').convert_alpha()
+img_body = pygame.image.load('body.png').convert_alpha()
+img_tail = pygame.image.load('tail.png').convert_alpha()
+img_slaze = pygame.image.load('slize.png').convert_alpha()
 def close_game():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
 
 while True:
-    print(snake)
     surface.fill('black', (0,0, RES, RES))
     surface.blit(img, (0, 0))
     # drawing snake, apple
-    [pygame.draw.rect(surface, pygame.Color('green'), (i, j, SIZE - 1, SIZE - 1)) for i, j in snake]
+    # [pygame.draw.rect(surface, pygame.Color('green'), (i, j, SIZE - 1, SIZE - 1)) for i, j in snake[1:-1]]
     [surface.blit(img_body, (i,j)) for i, j in snake]
     surface.blit(img_face, snake[-1])
+    surface.blit(img_tail, snake[0])
     # pygame.draw.rect(surface, pygame.Color('red'), (*apple, SIZE, SIZE))
     surface.blit(img_apple, apple)
     # show score
@@ -51,10 +56,15 @@ while True:
     # eating food
     if snake[-1] == apple:
         apple = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
+        while apple in snake:
+            apple = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
         length += 1
         score += 1
         snake_speed -= 1
         snake_speed = max(snake_speed, 10)
+    # attack
+
+
     # game over
     if x < 0 or x > RES - SIZE or y < 0 or y > RES - SIZE or len(snake) != len(set(snake)):
         while True:
@@ -70,17 +80,24 @@ while True:
     key = pygame.key.get_pressed()
     if key[pygame.K_w]:
         if dirs['W']:
+            if dx == 1 and dy == 0:
+                img_face = pygame.transform.rotate(img_face, -90)
+            elif dx == -1 and dy == 0:
+                img_face = pygame.transform.rotate(img_face, 90)
             dx, dy = 0, -1
-            dirs = {'W': True, 'S': False, 'A': True, 'D': True, }
+            dirs = {'W': True, 'S': False, 'A': True, 'D': True}
     elif key[pygame.K_s]:
         if dirs['S']:
+            img_face = pygame.transform.rotate(img_face, 90)
             dx, dy = 0, 1
-            dirs = {'W': False, 'S': True, 'A': True, 'D': True, }
+            dirs = {'W': False, 'S': True, 'A': True, 'D': True}
     elif key[pygame.K_a]:
         if dirs['A']:
+            img_face = pygame.transform.rotate(img_face, 90)
             dx, dy = -1, 0
-            dirs = {'W': True, 'S': True, 'A': True, 'D': False, }
+            dirs = {'W': True, 'S': True, 'A': True, 'D': False}
     elif key[pygame.K_d]:
         if dirs['D']:
+            img_face = pygame.transform.rotate(img_face, -90)
             dx, dy = 1, 0
-            dirs = {'W': True, 'S': True, 'A': False, 'D': True, }
+            dirs = {'W': True, 'S': True, 'A': False, 'D': True}
