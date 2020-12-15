@@ -81,7 +81,7 @@ while True:
 
 
     # game over
-    if len(snake) != len(set(snake)) or (x >= stone[0] and x <= stone[0]*stone[2] + SIZE and y >= stone[1] and y <= stone[1]*stone[2] + SIZE):
+    if len(snake) != len(set(snake)) or (x >= stone[0] and x <= stone[0]+ stone[2]*SIZE and y >= stone[1] and y <= stone[1]+stone[2]*SIZE):
         game_over = True
 
     key = pygame.key.get_pressed()
