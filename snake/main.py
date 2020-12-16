@@ -1,7 +1,7 @@
 import pygame
 from random import randrange
 
-RES = 1000
+RES = 700
 SIZE = 50
 
 x, y = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
@@ -29,6 +29,8 @@ img_face = pygame.image.load('snakeface.png').convert_alpha()
 img_body = pygame.image.load('body.png').convert_alpha()
 img_tail = pygame.image.load('tail.png').convert_alpha()
 img_slaze = pygame.image.load('slize.png').convert_alpha()
+img_stone = pygame.image.load('stone.png').convert_alpha()
+
 
 def close_game():
     for event in pygame.event.get():
@@ -76,7 +78,7 @@ while True:
         snake_speed = max(snake_speed, 10)
     # stone
     pygame.draw.rect(surface, pygame.Color('grey'), (stone[0], stone[1], SIZE*stone[2], SIZE*stone[2]))
-
+    surface.blit(img_stone, stone)
     # attack
 
 
@@ -86,7 +88,6 @@ while True:
 
     key = pygame.key.get_pressed()
     if key[pygame.K_RETURN] and game_over:
-        print(key)
         game_over = False
         x, y = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
         apple = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
