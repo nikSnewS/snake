@@ -9,7 +9,7 @@ apple = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
 length = 1
 snake = [(x, y)]
 dx, dy = 0, 0
-fps = 60
+fps = 30
 dirs = {'W': True, 'S': True, 'A': True, 'D': True, }
 score = 0
 speed_count, snake_speed = 0, 10
@@ -79,11 +79,14 @@ while True:
     # stone
         # pygame.draw.rect(surface, pygame.Color('grey'), (*stone, SIZE, SIZE))
         surface.blit(img_stone, stone)
-    # attack
 
+    # attack
+    if key[pygame.K_SPACE]:
+        [pygame.draw.rect(surface, pygame.Color('green'), (i, j, SIZE - 1, SIZE - 1)) for i, j in slize]
+        [surface.blit(img_slize, (i, j)) for i, j in slize]
 
     # game over
-    if len(snake) != len(set(snake)) or (x >= stone[0] and x <= stone[0]+ stone[2]*SIZE and y >= stone[1] and y <= stone[1]+stone[2]*SIZE):
+    if len(snake) != len(set(snake)):
         game_over = True
 
     key = pygame.key.get_pressed()
@@ -134,10 +137,10 @@ while True:
                 img_face = pygame.transform.rotate(img_face, 90)
             elif dx == 0 and dy == 1:
                 img_face = pygame.transform.rotate(img_face, -90)
-            if dx == 1 and dy == 0:
-                img_tail = pygame.transform.rotate(img_tail, -90)
-            elif dx == -1 and dy == 0:
+            if dx == 0 and dy == -1:
                 img_tail = pygame.transform.rotate(img_tail, 90)
+            elif dx == 0 and dy == 1:
+                img_tail = pygame.transform.rotate(img_tail, -90)
             dx, dy = -1, 0
             dirs = {'W': True, 'S': True, 'A': True, 'D': False}
     elif key[pygame.K_d]:
@@ -146,9 +149,9 @@ while True:
                 img_face = pygame.transform.rotate(img_face, -90)
             elif dx == 0 and dy == 1:
                 img_face = pygame.transform.rotate(img_face, 90)
-            if dx == 1 and dy == 0:
+            if dx == 0 and dy == -1:
                 img_tail = pygame.transform.rotate(img_tail, -90)
-            elif dx == -1 and dy == 0:
+            elif dx == 0 and dy == 1:
                 img_tail = pygame.transform.rotate(img_tail, 90)
             dx, dy = 1, 0
             dirs = {'W': True, 'S': True, 'A': False, 'D': True}
