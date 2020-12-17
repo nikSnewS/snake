@@ -31,9 +31,9 @@ img_face = pygame.image.load('snakeface.png').convert_alpha()
 img_body = pygame.image.load('body.png').convert_alpha()
 img_tail = pygame.image.load('tail.png').convert_alpha()
 img_slize = pygame.image.load('slize.png').convert_alpha()
-# img_stone = pygame.image.load('stone.png').convert_alpha()
+# img_stone = pygame.image.load('stone').convert_alpha()
 img_portal = pygame.image.load('portal.png').convert_alpha()
-portal_exit = pygame.image.load('portalexit.png').convert_alpha()
+img_portal_exit = pygame.image.load('portal_exit.png').convert_alpha()
 
 def close_game():
     for event in pygame.event.get():
@@ -58,6 +58,8 @@ while True:
         surface.blit(img_apple, apple)
         # pygame.draw.rect(surface, pygame.Color('blue'), (*portal, SIZE, SIZE))
         surface.blit(img_portal, portal)
+        # pygame.draw.rect(surface, pygame.Color('blue'), (*portal_exit, SIZE, SIZE))
+        surface.blit(img_portal_exit, portal_exit)
         # pygame.draw.rect(surface, pygame.Color('blue'), (*portal, SIZE, SIZE))
         surface.blit(img_portal, portal)
         # show score
@@ -84,7 +86,7 @@ while True:
         snake_speed -= 1
         snake_speed = max(snake_speed, 10)
     # stone
-        pygame.draw.rect(surface, pygame.Color('grey'), (*stone, SIZE, SIZE))
+        # pygame.draw.rect(surface, pygame.Color('grey'), (*stone, SIZE, SIZE))
         # surface.blit(img_stone, stone)
     # portal
     if snake[-1] == portal:
