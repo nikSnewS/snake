@@ -6,16 +6,18 @@ SIZE = 50
 
 x, y = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
 apple = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
+portal = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
+portal_exit = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
 length = 1
 snake = [(x, y)]
 dx, dy = 0, 0
-fps = 50
+fps = 30
 dirs = {'W': True, 'S': True, 'A': True, 'D': True, }
 score = 0
 speed_count, snake_speed = 0, 10
 slize = (0, 0)
 game_over = False
-stone = (randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE), randrange(1, 4))
+stone = (randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE), randrange)
 
 pygame.init()
 surface = pygame.display.set_mode([RES, RES])
@@ -28,9 +30,10 @@ img_apple = pygame.image.load('apple.png').convert_alpha()
 img_face = pygame.image.load('snakeface.png').convert_alpha()
 img_body = pygame.image.load('body.png').convert_alpha()
 img_tail = pygame.image.load('tail.png').convert_alpha()
-img_slaze = pygame.image.load('slize.png').convert_alpha()
-img_stone = pygame.image.load('stone.png').convert_alpha()
-
+img_slize = pygame.image.load('slize.png').convert_alpha()
+# img_stone = pygame.image.load('stone.png').convert_alpha()
+img_portal = pygame.image.load('portal.png').convert_alpha()
+portal_exit = pygame.image.load('portalexit.png').convert_alpha()
 
 def close_game():
     for event in pygame.event.get():
@@ -53,6 +56,10 @@ while True:
         surface.blit(img_face, snake[-1])
         # pygame.draw.rect(surface, pygame.Color('red'), (*apple, SIZE, SIZE))
         surface.blit(img_apple, apple)
+        # pygame.draw.rect(surface, pygame.Color('blue'), (*portal, SIZE, SIZE))
+        surface.blit(img_portal, portal)
+        # pygame.draw.rect(surface, pygame.Color('blue'), (*portal, SIZE, SIZE))
+        surface.blit(img_portal, portal)
         # show score
         render_score = font_score.render(f'SCORE: {score}', 1, pygame.Color('orange'))
         surface.blit(render_score, (5, 5))
@@ -77,13 +84,21 @@ while True:
         snake_speed -= 1
         snake_speed = max(snake_speed, 10)
     # stone
-    pygame.draw.rect(surface, pygame.Color('grey'), (stone[0], stone[1], SIZE*stone[2], SIZE*stone[2]))
-    surface.blit(img_stone, stone)
-    # attack
+        pygame.draw.rect(surface, pygame.Color('grey'), (*stone, SIZE, SIZE))
+        # surface.blit(img_stone, stone)
+    # portal
+    if snake[-1] == portal:
+        snake == portal_exit
 
+
+    # attack
+    key = pygame.key.get_pressed()
+    if key[pygame.K_SPACE]:
+        [pygame.draw.rect(surface, pygame.Color('green'), (i, j, SIZE - 1, SIZE - 1)) for i, j in slize]
+        [surface.blit(img_slize, (i, j)) for i, j in slize]
 
     # game over
-    if len(snake) != len(set(snake)) or (x >= stone[0] and x <= stone[0]+ stone[2]*SIZE and y >= stone[1] and y <= stone[1]+stone[2]*SIZE):
+    if len(snake) != len(set(snake)): # or (x >= stone[0] and x <= stone[0]+ stone[2]*SIZE and y >= stone[1] and y <= stone[1]+stone[2]*SIZE)
         game_over = True
 
     key = pygame.key.get_pressed()
@@ -110,6 +125,10 @@ while True:
                 img_face = pygame.transform.rotate(img_face, -90)
             elif dx == -1 and dy == 0:
                 img_face = pygame.transform.rotate(img_face, 90)
+            if dx == 1 and dy == 0:
+                img_tail = pygame.transform.rotate(img_tail, -90)
+            elif dx == -1 and dy == 0:
+                img_tail = pygame.transform.rotate(img_tail, 90)
             dx, dy = 0, -1
             dirs = {'W': True, 'S': False, 'A': True, 'D': True}
     elif key[pygame.K_s]:
@@ -118,6 +137,10 @@ while True:
                 img_face = pygame.transform.rotate(img_face, 90)
             elif dx == -1 and dy == 0:
                 img_face = pygame.transform.rotate(img_face, -90)
+            if dx == 1 and dy == 0:
+                img_tail = pygame.transform.rotate(img_tail, -90)
+            elif dx == -1 and dy == 0:
+                img_tail = pygame.transform.rotate(img_tail, 90)
             dx, dy = 0, 1
             dirs = {'W': False, 'S': True, 'A': True, 'D': True}
     elif key[pygame.K_a]:
@@ -126,6 +149,10 @@ while True:
                 img_face = pygame.transform.rotate(img_face, 90)
             elif dx == 0 and dy == 1:
                 img_face = pygame.transform.rotate(img_face, -90)
+            if dx == 0 and dy == -1:
+                img_tail = pygame.transform.rotate(img_tail, 90)
+            elif dx == 0 and dy == 1:
+                img_tail = pygame.transform.rotate(img_tail, -90)
             dx, dy = -1, 0
             dirs = {'W': True, 'S': True, 'A': True, 'D': False}
     elif key[pygame.K_d]:
@@ -134,5 +161,9 @@ while True:
                 img_face = pygame.transform.rotate(img_face, -90)
             elif dx == 0 and dy == 1:
                 img_face = pygame.transform.rotate(img_face, 90)
+            if dx == 0 and dy == -1:
+                img_tail = pygame.transform.rotate(img_tail, -90)
+            elif dx == 0 and dy == 1:
+                img_tail = pygame.transform.rotate(img_tail, 90)
             dx, dy = 1, 0
             dirs = {'W': True, 'S': True, 'A': False, 'D': True}
