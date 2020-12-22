@@ -4,6 +4,9 @@ from random import randrange
 RES = 700
 SIZE = 50
 
+skin = input('Выбери img_1 или 2!\n')
+print(f'{skin}')
+
 x, y = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
 apple = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
 portal = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
@@ -25,13 +28,20 @@ clock = pygame.time.Clock()
 font_score = pygame.font.SysFont('Arial', 26, bold=True)
 font_end = pygame.font.SysFont('Arial', 66, bold=True)
 
+# окружение
 img = pygame.image.load('1.jpg').convert_alpha()
 img_apple = pygame.image.load('apple.png').convert_alpha()
-img_face = pygame.image.load('snakeface.png').convert_alpha()
+# img_stone = pygame.image.load('stone').convert_alpha()
+# змея
+img_1 = pygame.image.load('snakeface.png').convert_alpha()
 img_body = pygame.image.load('body.png').convert_alpha()
 img_tail = pygame.image.load('tail.png').convert_alpha()
+newsnakeface = pygame.image.load('newsnakeface.png').convert_alpha()
+newbody = pygame.image.load('newbody.png').convert_alpha()
+newtail = pygame.image.load('newtail.png').convert_alpha()
+
+# механики
 img_slize = pygame.image.load('slize.png').convert_alpha()
-# img_stone = pygame.image.load('stone').convert_alpha()
 img_portal = pygame.image.load('portal.png').convert_alpha()
 img_portal_exit = pygame.image.load('portal_exit.png').convert_alpha()
 
@@ -169,3 +179,8 @@ while True:
                 img_tail = pygame.transform.rotate(img_tail, 90)
             dx, dy = 1, 0
             dirs = {'W': True, 'S': True, 'A': False, 'D': True}
+
+
+
+
+
